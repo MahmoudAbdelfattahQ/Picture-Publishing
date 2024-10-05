@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"   xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            margin-bottom: 150px;
+        }
+        #navbarNavlogout{
+            justify-content: right;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Picture Publishing</a>
+
+        <div class="collapse navbar-collapse" id="navbarNavlogout">
+            <form action="#" th:action="@{/logout}"   method="POST">
+
+                <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+            </form>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5" style="max-width:800px ">
+    <!-- Upload Picture Form -->
+    <div class="card" style="    margin-top: 150px;">
+        <div class="card-header">
+            Upload New Picture
+        </div>
+        <div class="card-body">
+            <form  action="#" th:action="@{/userDashboard/upload}" th:object="${pictureDto}" method="POST" enctype="multipart/form-data" >
+                <div class="mb-3" style="max-width: 300px">
+                    <label for="description" class="form-label">Picture name</label>
+                    <input th:field="*{title}" type="text" class="form-control" id="pictureName" name="description" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input th:field="*{description}" type="text" class="form-control" id="description" name="description" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-select" id="category" th:field="*{category}" name="category" required>
+                        <option value="">Choose...</option>
+                        <option value="LIVING_THING">Living Thing</option>
+                        <option value="MACHINE">Machine</option>
+                        <option value="NATURE">Nature</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="attachment" class="form-label">Picture (jpg, png, gif only, max size: 2MB)</label>
+                    <input type="file" class="form-control" id="attachment" name="imag" accept="image/jpeg, image/png, image/gif" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Table of Past Uploaded Pictures -->
+    <div class="mt-5">
+        <h4>Past Uploaded Pictures</h4>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>Picture</th>
+                <th>Picture Name</th>
+                <th>Description</th>
+                <th>Category</th>
+
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="picture : ${pictures}" >
+                <td>
+                    <img th:src="'/pictures/'+ ${picture.id}" alt="picture" width="100" height="100px">
+                </td>
+                <td th:text="${picture.title}"></td>
+                <td th:text="${picture.description}"></td>
+                <td >
+                        <span th:if="${picture.category.toString() == 'LIVING_THING'}">Living Thing</span>
+                        <span th:if="${picture.category.toString() == 'MACHINE'}">Machine</span>
+                        <span th:if="${picture.category.toString() == 'NATURE'}">Nature</span>
+                </td>
+
+                <td >
+                    <span th:if="${picture.status.toString() == 'PENDING'}" class="text-warning">Pending</span>
+                    <span th:if="${picture.status.toString() == 'ACCEPTED'}" class="text-success">Accepted</span>
+                    <span th:if="${picture.status.toString() == 'REJECTED'}" class="text-danger">Rejected</span>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
