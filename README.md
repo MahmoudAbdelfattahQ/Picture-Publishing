@@ -50,7 +50,7 @@ The Picture Publishing Service is a web application where registered and logged-
 ## Installation
 
 ### Prerequisites
-- Java 11 or higher
+- Java 17
 - Maven
 - PostgreSQL
 
